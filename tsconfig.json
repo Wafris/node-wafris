@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "strictNullChecks": true,
+    "target": "es6",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "sourceMap": true,
+    "outDir": "dist"
+  },
+  "exclude": ["/**/*.test.ts", "/**/*.test.tsx", "jest.config.*", "/**/__mocks__"]
+}
