@@ -121,7 +121,9 @@ async function wafrisMiddleware(
         );
       } else {
         logger.error(
-          `[Wafris] An unexpected ${typeof e} occurred: ${e}. Request passed without rules check.`,
+          `[Wafris] An unexpected ${typeof e} occurred: ${
+            e as any
+          }. Request passed without rules check.`,
         );
       }
       next();
