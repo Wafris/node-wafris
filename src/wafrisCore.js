@@ -5,7 +5,9 @@ import { readFileSync } from "fs";
 
 const base = dirname(fileURLToPath(import.meta.url));
 
-export default readFileSync(
+const core = readFileSync(
   path.join(base, "../lib/lua/dist/wafris_core.lua"),
   "utf8",
 );
+
+export default core;

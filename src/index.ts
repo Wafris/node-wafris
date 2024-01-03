@@ -1,5 +1,5 @@
 import type { Request, Response, NextFunction } from "express";
-import { Address4, Address6 } from "ip-address";
+import { Address4, Address6, AddressError } from "ip-address";
 import {
   createClient,
   type RedisClientOptions,
@@ -27,34 +27,40 @@ function requestToRedisArguments(req: Request, logger: WafrisLogger): string[] {
   map.set("userAgent", req.get("User-Agent"));
   map.set("path", req.path);
   map.set("query", req.query);
-  map.set("host", req.hostname + ":" + req.port);
+  map.set("host", req.hostname);
   map.set("method", req.method);
 
   return Array.from(map.values()).map(String);
 }
 
-function requestIpToNumericString(
-  req: Request,
-  logger: WafrisLogger,
-): string | undefined {
+function requestIpToNumericString(req: Request, logger: WafrisLogger): string {
+  if (req.ip == null) {
+    logger.error("[Wafris] Request IP is null");
+    return "";
+  }
   try {
-    const ip4 = new Address4(req.ip as string);
+    const ip4 = new Address4(req.ip);
     return ip4.bigInteger().toString();
   } catch (e) {
     try {
-      const ip6 = new Address6(req.ip as string);
-      return ip6.bigInteger();
+      const ip6 = new Address6(req.ip);
+      return ip6.bigInteger().toString();
     } catch (e) {
-      if (e.constructor.name === "AddressError") {
+      if (e instanceof AddressError) {
         logger.error(
           `[Wafris] Error parsing IP address ${req.ip}`,
           e.parseMessage,
         );
-      } else {
+      } else if (e instanceof Error) {
         logger.error(
           `[Wafris] Unexpeected ${e.name} parsing IP address ${req.ip}`,
         );
+      } else {
+        logger.error(
+          `[Wafris] Unexpeected error ${typeof e} parsing IP address ${req.ip}`,
+        );
       }
+      return "";
     }
   }
 }
@@ -109,9 +115,13 @@ async function wafrisMiddleware(
         logger.error(
           "[Wafris] Wafris timed out during processing. Request passed without rules check.",
         );
-      } else {
+      } else if (e instanceof Error) {
         logger.error(
           `[Wafris] An unexpected ${e.name} occurred: ${e.message}. Request passed without rules check.`,
+        );
+      } else {
+        logger.error(
+          `[Wafris] An unexpected ${typeof e} occurred: ${e}. Request passed without rules check.`,
         );
       }
       next();
