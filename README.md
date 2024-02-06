@@ -1,9 +1,9 @@
 # Wafris for Node Express
-Wafris is an open-source Web Application Firewall (WAF) that runs within Rails (and other frameworks) powered by Redis.
+Wafris is an open-source Web Application Firewall (WAF) that runs within your Node web application (and other frameworks) powered by Redis.
 
 Paired with [Wafris Hub](https://wafris.org/hub), you can create rules to block malicious traffic from hitting your application.
 
-![Rules and Graph](docs/rules-and-graph.png)
+![Rules and Graph](https://github.com/Wafris/wafris-rb/raw/main/docs/rules-and-graph.png)
 
 Rules like:
 
@@ -37,7 +37,7 @@ Use your preferred package manager to add `node-wafris`. For instance, using
 `npm`
 
 ```
-npm install --save node-wafris
+npm install https://github.com/Wafris/node-wafris.git
 ```
 
 ### 3. Initialize the middleware
