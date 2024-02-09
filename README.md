@@ -31,7 +31,7 @@ follow the instructions to link your Redis instance.
 
 **Note:** In Step 3, you'll use this same Redis URL in your app configuration.
 
-### 2. Add the gem to your application
+### 2. Add the middleware to your application
 
 Use your preferred package manager to add `node-wafris`. For instance, using
 `npm`
