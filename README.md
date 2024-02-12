@@ -64,3 +64,5 @@ A few configuration properties are available and all have sensible defaults. See
 
 Not sure what Redis provider to use? Please read our [Wafris Redis Providers Guide](https://wafris.org/guides/redis-provisioning)
 
+
+<img src='https://uptimer.expeditedsecurity.com/node-wafris' width='0' height='0'>
