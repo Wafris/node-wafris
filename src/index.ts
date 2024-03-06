@@ -89,6 +89,8 @@ async function wafrisMiddleware(
   const coresha = await redisClient.scriptLoad(wafrisCore);
   const logger = config.logger ?? console;
 
+  redisClient.HSET("waf-settings", "version", "v0.0.1", "client", "node-wafris");
+
   return async function wafris(
     req: Request,
     res: Response,
